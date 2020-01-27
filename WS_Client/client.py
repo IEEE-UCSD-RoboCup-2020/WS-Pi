@@ -14,7 +14,7 @@ async def hello():
     async with websockets.connect(uri) as websocket:
         
         # Notify the server that the client connected.
-        await websocket.send("Connect.");
+        await websocket.send("");
         await websocket.recv();
 
         # Maintain the connection through while(True) loop
@@ -23,6 +23,12 @@ async def hello():
             # Otherwise, send garbage data
             if (len(commands) > 0):
                 m = commands.pop()
+                
+                # Close command to cleanly disconnect from server
+                if (m == "close"):
+                    await websocket.close()
+                    break
+
                 await websocket.send(m)            
             else:
                 await websocket.send("")
@@ -36,6 +42,5 @@ async def hello():
 def stdin_data( message ):
     commands.add(sys.stdin.readline().strip('\n'))
 
-while(True):
-    asyncio.get_event_loop().add_reader(sys.stdin, stdin_data, commands)
-    asyncio.get_event_loop().run_until_complete(hello())
+asyncio.get_event_loop().add_reader(sys.stdin, stdin_data, commands)
+asyncio.get_event_loop().run_until_complete(hello())
