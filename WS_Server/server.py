@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
+import sys
 import time
 import asyncio
 import websockets
 
-USERS = set()
+USERS = list()
+commands = set()
 
 # Methods handling registration of new clients
 async def register(websocket):
-    USERS.add(websocket)
+    USERS.append(websocket)
     await asyncio.wait([user.send("Device was connected.") for user in USERS])
 
 async def unregister(websocket):
@@ -23,17 +25,23 @@ async def main(websocket, path):
             received = message
             if (message != ""):
                 print(message)
-            await websocket.send(str(len(USERS)))
+            
+            # Send commands in the list if any are there.
+            # TODO: Implement specific client sending
+            if (len(commands) > 0):
+                m = commands.pop()
+                await asyncio.wait([user.send(m) for user in USERS])            
+            else:
+                await websocket.send("")
     finally:
         await unregister(websocket)
 
-# TODO: Make commands while sending and receiving messages
-async def command():
-    while(True):
-        command = input()
-        print(command)
+# Method to manage stdin input from asyncio's reader
+def stdin_data(cmdInput):
+    commands.add(sys.stdin.readline().strip('\n'))
 
 start_server = websockets.serve(main, "localhost", 8765)
 
+asyncio.get_event_loop().add_reader(sys.stdin, stdin_data, commands)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
