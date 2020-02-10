@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+message command {
+    required int32 service_type = 1;
+    optional float kick_power = 2;
+    optional float catch_power = 3;
+    repeated float hg_mtx = 4 [packed=true];
+    optional int32 misc = 5;
+    required string msg = 6;
+}
