@@ -11,7 +11,7 @@ commands = set()
 # Just waits for a command from the server. Otherwise, 
 # send the command to the server.
 async def hello():
-    uri = "ws://localhost:8765"
+    uri = "ws://100.80.241.145:8765"
     command = command_pb2.command()
     async with websockets.connect(uri) as websocket:
         
@@ -38,7 +38,7 @@ async def hello():
             # Wait for response and do something with it
             response = await websocket.recv()
             if (response != ""):
-                print(response)
+                # print(response)
                 f = open("Ehh", "wb")
                 command.service_type = 1
                 command.msg = response
