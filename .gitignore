@@ -6,6 +6,14 @@ __pycache__/
 # C extensions
 *.so
 
+# C/C++ objs/precomiled headers
+*/*.o
+*/*.gch
+*/main
+
+#vscode settings
+.vscode
+
 # Distribution / packaging
 .Python
 build/
