@@ -39,7 +39,6 @@ async def hello():
             # Wait for response and do something with it
             response = await websocket.recv()
             if (response != ""):
-                print("writing to file", file=sys.stderr)
                 f = open("Ehh", "wb")
                 command.service_type = 1
                 command.msg = response
