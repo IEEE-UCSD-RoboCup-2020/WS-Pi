@@ -38,7 +38,7 @@ async def hello():
             # Wait for response and do something with it
             response = await websocket.recv()
             if (response != ""):
-                # print(response)
+                print(response)
 
 # Method to manage stdin data sent from asyncio's reader
 def stdin_data( message ):
