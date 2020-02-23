@@ -39,15 +39,17 @@ async def hello():
             response = await websocket.recv()
             if (response != ""):
                 # print(response)
-                f = open("Ehh", "wb")
-                command.service_type = 1
-                command.msg = response
-                f.write(command.SerializeToString())
-                f.close()
 
 # Method to manage stdin data sent from asyncio's reader
 def stdin_data( message ):
     commands.add(sys.stdin.readline().strip('\n'))
+
+async def protoSend( srv_type, msg_send ):
+    f = open("protoFile", "wb")
+    command.service_type = srv_type
+    command.msg = msg_send
+    f.write(command.SerializeToString())
+    f.close()
 
 asyncio.get_event_loop().add_reader(sys.stdin, stdin_data, commands)
 asyncio.get_event_loop().run_until_complete(hello())
