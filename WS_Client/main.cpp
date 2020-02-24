@@ -2,7 +2,6 @@
 #error "C++17 standard is required"
 #endif
 
-#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <future>
@@ -50,7 +49,7 @@ void receive(std::string filename) {
 int main(void) {
     
     // Fire the thread
-    auto result = std::async(std::launch::async, receive, "Ehh");
+    auto result = std::async(std::launch::async, receive, "protoFile");
 
     // Cleanup
     result.get();
