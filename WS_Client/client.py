@@ -5,14 +5,15 @@ import time
 import asyncio
 import websockets
 import command_pb2
+from subprocess import call
 
 commands = set()
-
+command = command_pb2.command()
 # Just waits for a command from the server. Otherwise, 
 # send the command to the server.
 async def hello():
     uri = "ws://localhost:8765"
-    command = command_pb2.command()
+    
     async with websockets.connect(uri) as websocket:
         
         # Notify the server that the client connected.
@@ -38,7 +39,7 @@ async def hello():
             # Wait for response and do something with it
             response = await websocket.recv()
             if (response != ""):
-                print(response)
+                await protoSend( 0, response )
 
 # Method to manage stdin data sent from asyncio's reader
 def stdin_data( message ):
