@@ -51,6 +51,9 @@ async def main( websocket, path ):
                     await broadcast( getCmd )
             else:
                 await websocket.send( "" )
+    except websockets.exceptions.ConnectionClosedOK:
+        print( "A client has disconnected, " + str( len( USERS ) ) + " client(s) connected" )
+        await broadcast( "Device was disconnected." )
     finally:
         await unregister( websocket )
 
