@@ -9,9 +9,9 @@ g++ -std=c++17 -lprotobuf ../ProtoWS/command.pb.cc main.cpp -o main
 ```
 on Linux:
 ```bash
-g++-8 -std=c++17 ../ProtoWS/command.pb.cc main.cpp -o main `pkg-config --cflags --libs protobuf` -lstdc++fs
+g++ -std=c++17 ../ProtoWS/command.pb.cc main.cpp -o main `pkg-config --cflags --libs protobuf` -lstdc++fs
 ```
 or
 ```bash
-g++-8 -std=c++17 ../ProtoWS/command.pb.cc main.cpp -o main -pthread -I/usr/local/include -L/usr/local/lib -lprotobuf -lstdc++fs
+g++ -std=c++17 ../ProtoWS/command.pb.cc main.cpp -o main -pthread -I/usr/local/include -L/usr/local/lib -lprotobuf -lstdc++fs
 ```

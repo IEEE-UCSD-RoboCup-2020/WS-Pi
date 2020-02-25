@@ -2,7 +2,14 @@
 #error "C++17 standard is required"
 #endif
 
+#if __GNUC__ >= 8
 #include <filesystem>
+#define FS std::filesystem
+#else
+#include <experimental/filesystem>
+#define FS std::experimental::filesystem
+#endif
+
 #include <fstream>
 #include <future>
 #include "../ProtoWS/command.pb.h"
@@ -20,12 +27,12 @@ void receive(std::string filename) {
     GOOGLE_PROTOBUF_VERIFY_VERSION;
     command cmd;
 
-    std::filesystem::path f_path(filename);
-    std::filesystem::file_time_type last_modified;
+    FS::path f_path(filename);
+    FS::file_time_type last_modified;
     
     while(1) {
         // Busy checking
-        if(std::filesystem::exists(f_path) && last_modified < std::filesystem::last_write_time(f_path)) {
+        if(FS::exists(f_path) && last_modified < FS::last_write_time(f_path)) {
             std::fstream input(filename, std::ios::in | std::ios::binary);
             cmd.ParseFromIstream(&input);
 
@@ -35,11 +42,11 @@ void receive(std::string filename) {
             }
 
             printer("Command received: ", "service_type=", cmd.service_type(), ", msg=\"", cmd.msg(), "\"");
-            last_modified = std::filesystem::last_write_time(f_path);
+            last_modified = FS::last_write_time(f_path);
         }
     }
 
-    std::filesystem::remove(f_path);
+    FS::remove(f_path);
 
     google::protobuf::ShutdownProtobufLibrary();
 }
